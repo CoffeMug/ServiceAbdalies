@@ -38,6 +38,7 @@ public class GiphyApi {
             e.printStackTrace();
         }
         Random randomGenerator = new Random();
-        return giphy.getData().get(randomGenerator.nextInt(GIPHY_IMAGE_LIMIT)).getImages().getOriginal().getUrl();
+        int numberOfGiphiesInResponse = giphy.getData().size();
+        return giphy.getData().get(randomGenerator.nextInt(numberOfGiphiesInResponse)).getImages().getOriginal().getUrl();
     }
 }
