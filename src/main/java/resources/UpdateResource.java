@@ -49,8 +49,11 @@ public class UpdateResource {
 
     private void processBotCommand(String updateMessageText, int chatID) {
         if (updateMessageText.contains("/giphy")) {
-            GiphyApi giphyApi = new GiphyApi();
-            abdaliesBotApi.sendMessage(giphyApi.search(updateMessageText.split("\\s")[1]), chatID);
+            String giphyQuery = updateMessageText.substring(6);
+            if (giphyQuery != null && giphyQuery.trim().length() > 0 ) {
+                GiphyApi giphyApi = new GiphyApi();
+                abdaliesBotApi.sendMessage(giphyApi.search(giphyQuery), chatID);
+            }
         } else if (updateMessageText.contains("/today")) {
             abdaliesBotApi.sendMessage(getToday(), chatID, "Markdown");
         }

@@ -1,0 +1,47 @@
+template: Hello, %s!
+defaultName: Stranger
+
+server:
+  applicationConnectors:
+  - type: http
+    port: 80
+  - type: https
+    port: 443
+    keyStorePath: keystore.jks
+    keyStorePassword: abdalies
+    validateCerts: false
+    validatePeers: false
+    idleTimeout: 30 seconds
+    minBufferPoolSize: 64 bytes
+    bufferPoolIncrement: 1KiB
+    maxBufferPoolSize: 64KiB
+    acceptorThreads: 1
+    selectorThreads: 2
+    acceptQueueSize: 1024
+    reuseAddress: true
+    soLingerTime: 10s
+    useServerHeader: false
+    useDateHeader: true
+    useForwardedHeaders: true	
+  adminConnectors:
+  - type: http
+    port: 9001
+  requestLog:
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/serviceAbdalies/access/access.log
+        threshold: ALL
+        archive: true
+        archivedLogFilenamePattern: /var/log/serviceAbdalies/access/access.%d.log.gz
+        archivedFileCount: 5
+
+
+logging:
+  appenders:
+    - type: console
+      threshold: INFO
+      target: stderr
+    - type: file
+      currentLogFilename: /var/log/serviceAbdalies/serviceabdalies.log
+      archivedLogFilenamePattern: /var/log/serviceAbdalies/serviceabdalies.%d.log.gz
+      archivedFileCount: 5
