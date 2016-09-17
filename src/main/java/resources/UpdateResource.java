@@ -4,6 +4,10 @@ import api.AbdaliesBotApi;
 import api.giphy.GiphyApi;
 import api.Message;
 import api.Update;
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.PersianCalendar;
+import com.ibm.icu.util.ULocale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +51,22 @@ public class UpdateResource {
         if (updateMessageText.contains("/giphy")) {
             GiphyApi giphyApi = new GiphyApi();
             abdaliesBotApi.sendMessage(giphyApi.search(updateMessageText.split("\\s")[1]), chatID);
-
+        } else if (updateMessageText.contains("/today")) {
+            abdaliesBotApi.sendMessage(getToday(), chatID, "Markdown");
         }
+    }
+
+    private String getToday() {
+        ULocale farsiLocale = new ULocale("fa_IR@calendar=persian");
+        Calendar calendar = Calendar.getInstance(farsiLocale);
+        DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, farsiLocale);
+        DateFormat usdf = DateFormat.getDateInstance(DateFormat.FULL);
+        String[] todayElements = df.format(calendar).split("\\s");
+        String day = todayElements[3].replace("," , "");
+
+        String today = String.format("امروز: %s %s %s %s %s", todayElements[4], day,
+                todayElements[2], todayElements[1], todayElements[0]);
+        today = today.concat("%0A").concat(usdf.format(calendar));
+        return today;
     }
 }

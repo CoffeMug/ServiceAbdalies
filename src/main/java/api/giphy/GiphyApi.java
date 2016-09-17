@@ -39,6 +39,10 @@ public class GiphyApi {
         }
         Random randomGenerator = new Random();
         int numberOfGiphiesInResponse = giphy.getData().size();
-        return giphy.getData().get(randomGenerator.nextInt(numberOfGiphiesInResponse)).getImages().getOriginal().getUrl();
+        if (numberOfGiphiesInResponse > 0) {
+            return giphy.getData().get(randomGenerator.nextInt(numberOfGiphiesInResponse - 1)).getImages().getOriginal().getUrl();
+        } else {
+            return "No giphy could be returned!";
+        }
     }
 }

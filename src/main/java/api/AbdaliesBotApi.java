@@ -1,6 +1,5 @@
 package api;
 
-import org.apache.log4j.spi.LoggerFactory;
 import org.slf4j.Logger;
 
 import javax.ws.rs.client.*;
@@ -18,13 +17,18 @@ public class AbdaliesBotApi {
     Logger log = org.slf4j.LoggerFactory.getLogger("abdaliesBotLogger");
 
     public Response sendMessage(String text, int chatID) {
-        log.error(String.valueOf(chatID));
-        log.error(BOT_URL);
+        return sendMessage(text, chatID, "none");
+    }
+
+    public Response sendMessage(String text, int chatID, String parseMode) {
         client = ClientBuilder.newClient();
         webTarget = client.target(BOT_URL)
                 .path("sendMessage")
                 .queryParam("chat_id", String.valueOf(chatID))
                 .queryParam("text", text);
+        if (parseMode != "none") {
+            webTarget.queryParam("parse_mode", parseMode);
+        }
         return webTarget.request().post(javax.ws.rs.client.Entity.text(""));
     }
 
