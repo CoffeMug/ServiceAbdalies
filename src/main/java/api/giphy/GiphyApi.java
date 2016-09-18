@@ -37,12 +37,15 @@ public class GiphyApi {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Random randomGenerator = new Random();
+
         int numberOfGiphiesInResponse = giphy.getData().size();
-        if (numberOfGiphiesInResponse > 0) {
+        if (numberOfGiphiesInResponse > 1) {
+            Random randomGenerator = new Random();
             return giphy.getData().get(randomGenerator.nextInt(numberOfGiphiesInResponse - 1)).getImages().getOriginal().getUrl();
+        } else if (numberOfGiphiesInResponse == 1) {
+            return giphy.getData().get(0).getImages().getOriginal().getUrl();
         } else {
-            return "No giphy could be returned!";
+              return "No giphy could be returned!";
         }
     }
 }
